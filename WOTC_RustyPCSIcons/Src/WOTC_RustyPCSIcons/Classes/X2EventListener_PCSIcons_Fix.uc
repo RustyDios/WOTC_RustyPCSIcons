@@ -2,7 +2,7 @@
 //  FILE:   X2EventListener_PCSIcons_Fix                                 
 //  
 //	File created by RustyDios	15/09/19	12:20	
-//	LAST UPDATED				23/06/22	13:30
+//	LAST UPDATED				19/02/23	16:15
 //
 //	Adds an event listener to fix PCS Icons for custom PCS'
 //		Current Fixes for	All PCS Icons	LW PCS'		ABBA
@@ -12,9 +12,17 @@
 //
 //*******************************************************************************************
 
-class X2EventListener_PCSIcons_Fix extends X2EventListener config (Game);
+class X2EventListener_PCSIcons_Fix extends X2EventListener config (RustyPCSIcons);
+
+struct ColouredPCSIconOverride
+{
+	var name PCSName;
+	var string IconPath;
+	var string InvImagePath;
+};
 
 var config bool bEnableLogging, bEnableUnknownIcon;
+var config array<ColouredPCSIconOverride> ColouredPCSIconOverrides;
 
 //add the listener
 static function array<X2DataTemplate> CreateTemplates()
@@ -62,7 +70,9 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 {
 	local XComGameState_Item	ItemState;
 	local XComLWTuple			Tuple;
+	local name TemplateName;
 	local bool bIsSet;
+	local int i;
 
 	Tuple = XComLWTuple(EventData);
 	
@@ -83,84 +93,19 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 		`LOG("PCS Icon being adjusted:" @ItemState.GetMyTemplateName(), default.bEnableLogging, 'Rusty_ColouredPCS');
 		`LOG("PCS Icon Currently Set :" @Tuple.Data[1].s, default.bEnableLogging, 'Rusty_ColouredPCS');
 
-		//find match by EXACT name, and exit once found, optimal code suggestion by Iridar
-		switch (ItemState.GetMyTemplateName())
+		TemplateName = ItemState.GetMyTemplateName();
+
+		for(i = 0 ; i < default.ColouredPCSIconOverrides.length ; i++)
 		{
-			//Base Game
-			case 'CommonPCSConditioning':		Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_health";				bIsSet = true;	break;
-			case 'RarePCSConditioning':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_health";				bIsSet = true;	break;
-			case 'EpicPCSConditioning':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_health";				bIsSet = true;	break;
-
-			case 'CommonPCSPerception':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_aim";					bIsSet = true;	break;
-			case 'RarePCSPerception':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_aim";					bIsSet = true;	break;
-			case 'EpicPCSPerception':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_aim";					bIsSet = true;	break;
-
-			case 'CommonPCSAgility':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_dodge";					bIsSet = true;	break;
-			case 'RarePCSAgility':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_dodge";					bIsSet = true;	break;
-			case 'EpicPCSAgility':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_dodge";					bIsSet = true;	break;
-
-			case 'CommonPCSSpeed':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_mobility";				bIsSet = true;	break;
-			case 'RarePCSSpeed':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_mobility";				bIsSet = true;	break;
-			case 'EpicPCSSpeed':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_mobility";				bIsSet = true;	break;
-
-			case 'CommonPCSFocus':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_will";					bIsSet = true;	break;
-			case 'RarePCSFocus':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_will";					bIsSet = true;	break;
-			case 'EpicPCSFocus':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_will";					bIsSet = true;	break;
-
-			//Common Additions, re LWotC, Cut-Content Psionics, Grimy's Loot, AA Ability Tweaks, My Local files 
-			case 'CommonPCSPsi':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_psi";					bIsSet = true;	break;
-			case 'RarePCSPsi':					Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_psi";					bIsSet = true;	break;
-			case 'EpicPCSPsi':					Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_psi";					bIsSet = true;	break;
-
-			case 'CommonPCSHack':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-			case 'RarePCSHack':					Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-			case 'EpicPCSHack':					Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-
-			case 'CommonPCSHacking':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-        	case 'RarePCSHacking':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-        	case 'EpicPCSHacking':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";					bIsSet = true;	break;
-
-			case 'CommonPCSDefense':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Defense";				bIsSet = true;	break;
-			case 'RarePCSDefense':  			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Defense";				bIsSet = true;	break;
-			case 'EpicPCSDefense':  			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Defense";				bIsSet = true;	break;
-
-			//Bio Division Icon override fix with a colour version
-			case 'PCSBioDamageControl':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_BB";					bIsSet = true;	break;
-
-			//HIVE ..... PCSTacticalCoverage   PCSTacticalWithdraw     PCSTacticalSensesOffense    PCSTacticalSensesDefense
-			case 'PCSTacticalCoverage':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_SPAWN";					bIsSet = true;	break;
-			case 'PCSTacticalWithdraw':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_SPAWN";					bIsSet = true;	break;
-			case 'PCSTacticalSensesOffense':	Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_RUSH";						bIsSet = true;	break;
-			case 'PCSTacticalSensesDefense':	Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_RUSH";						bIsSet = true;	break;
-
-			//MOCX Unique Chips
-			case 'LongJumpPCS':					Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_LongJump";					bIsSet = true;	break;
-			case 'MimeticSkinPCS':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_MimeticSkin";				bIsSet = true;	break;
-
-			//LWotC PCS' matched exactly by name
-			case 'DepthPerceptionPCS':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_DepthPerception";		bIsSet = true;	break;
-			case 'HyperReactivePupilsPCS':		Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_HyperReactivePupils";	bIsSet = true;	break;
-			case 'CombatAwarenessPCS':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_ThreatAssesment";		bIsSet = true;	break;
-			case 'DamageControlPCS':			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_DamageControl";			bIsSet = true;	break;
-			case 'ImpactFieldsPCS':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_ImpactFields"; 			bIsSet = true;	break;
-			case 'BodyShieldPCS':				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_BodyShield";			bIsSet = true;	break;
-			case 'EmergencyLifeSupportPCS':		Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_EmergencyLifeSupport";	bIsSet = true;	break;
-			case 'IronSkinPCS':  				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Ironskin";				bIsSet = true;	break;
-			case 'SmartMacrophagesPCS':  		Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_SmartMacrophages";		bIsSet = true;	break;
-			case 'CombatRushPCS':  				Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_CombatRush";			bIsSet = true;	break;
-
-			case 'FireControl25PCS':  			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_FireControl";			bIsSet = true;	break;
-			case 'FireControl50PCS':  			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_FireControl";			bIsSet = true;	break;
-			case 'FireControl75PCS':  			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_FireControl";			bIsSet = true;	break;
-
-			//ABBA Arsenal by Kiruka
-			case 'ABBTriggerHappyPCS': 			Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_TriggerHappy";			bIsSet = true;	break;
-
-			//exit switch we couldn't find a match
-			default:  	bIsSet = false;	break;
+			if (TemplateName == default.ColouredPCSIconOverrides[i].PCSName)
+			{
+				Tuple.Data[1].s = "img:///" $ default.ColouredPCSIconOverrides[i].IconPath;
+				bIsSet = true;
+				continue;
+			}
 		}
 
-		//FIRST CHECK POINT FOR DIRECT NAME MATCH
+		//FIRST CHECK POINT FOR CONFIG MATCH
 		if (bIsSet)
 		{
 			bIsSet = false;
@@ -198,8 +143,8 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 		if (default.bEnableUnknownIcon)
 		{
 			Tuple.Data[1].s = "img:///UILib_RD_PCS.implants_unknown";
-		
-			`LOG("PCS icon set with unknown warning image!", default.bEnableLogging, 'Rusty_ColouredPCS');
+
+			`LOG("PCS icon set with unknown image! for" @ItemState.GetMyTemplateName(), true, 'Rusty_ColouredPCS');
 	
 			return ELR_NoInterrupt;
 		}
