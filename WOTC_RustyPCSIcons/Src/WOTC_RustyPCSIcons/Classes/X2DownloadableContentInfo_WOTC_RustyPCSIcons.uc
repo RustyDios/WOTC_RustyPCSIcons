@@ -42,6 +42,6 @@ static function PatchImages_Item (X2ItemTemplate Template, string ImagePath)
 	if (Template != none)
 	{
 		Template.strImage = "img:///" $ImagePath;
-		`LOG("Patched Image Item :: " @Template.GetItemFriendlyName() , true, 'Rusty_ColouredPCS');
+		`LOG("Patched Image Item :: " @Template.GetItemFriendlyName() , class'X2EventListener_PCSIcons_Fix'.default.bEnableLogging, 'Rusty_ColouredPCS');
 	}
 }
