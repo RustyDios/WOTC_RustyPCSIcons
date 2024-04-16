@@ -90,10 +90,10 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 
 	if (ItemState != none)
 	{
-		`LOG("PCS Icon being adjusted:" @ItemState.GetMyTemplateName(), default.bEnableLogging, 'Rusty_ColouredPCS');
-		`LOG("PCS Icon Currently Set :" @Tuple.Data[1].s, default.bEnableLogging, 'Rusty_ColouredPCS');
-
 		TemplateName = ItemState.GetMyTemplateName();
+
+		`LOG("PCS Icon being adjusted:" @TemplateName, default.bEnableLogging, 'Rusty_ColouredPCS');
+		`LOG("PCS Icon Currently Set :" @Tuple.Data[1].s, default.bEnableLogging, 'Rusty_ColouredPCS');
 
 		for(i = 0 ; i < default.ColouredPCSIconOverrides.length ; i++)
 		{
@@ -115,17 +115,17 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 			return ELR_NoInterrupt;
 		}
 
-		`LOG("No exact name Coloured PCS match for :: " @ItemState.GetMyTemplateName(), default.bEnableLogging, 'Rusty_ColouredPCS');
+		`LOG("No exact name Coloured PCS match for :: " @TemplateName, default.bEnableLogging, 'Rusty_ColouredPCS');
 
 		//FALLBACK OPTIONS IN CASE EXACT NAME MATCH FAILS ... ONLY CHECK IF WE'VE NOT FOUND A MATCH ... 
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSPsi", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_psi";		bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSHack", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";		bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSSpeed", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_mobility";	bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSFocus", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_will";		bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSDefense", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Defense";	bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSAgility", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_dodge";	bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSPerception", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_aim";		bIsSet = true;	}
-		if (!bIsSet && InStr(ItemState.GetMyTemplateName(), "PCSConditioning", , true) != INDEX_NONE)	{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_health";	bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Psi", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_psi";		bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Hack", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_hack";		bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Speed", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_mobility";	bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Focus", , true) != INDEX_NONE)			{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_will";		bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Defense", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_Defense";	bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Agility", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_dodge";	bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Perception", , true) != INDEX_NONE)		{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_aim";		bIsSet = true;	}
+		if (!bIsSet && InStr(TemplateName, "Conditioning", , true) != INDEX_NONE)	{Tuple.Data[1].s = "img:///UILib_RD_PCS.UIPerk_combatstim_rd_health";	bIsSet = true;	}
 
 		//SECOND CHECK POINT FOR UNMATCHED NAME BUT STANDARD FORMAT INCLUDED
 		if (bIsSet)
@@ -144,7 +144,7 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 		{
 			Tuple.Data[1].s = "img:///UILib_RD_PCS.implants_unknown";
 
-			`LOG("PCS icon set with unknown image! for" @ItemState.GetMyTemplateName(), true, 'Rusty_ColouredPCS');
+			`LOG("PCS icon set with unknown image! for" @TemplateName, true, 'Rusty_ColouredPCS');
 	
 			return ELR_NoInterrupt;
 		}
