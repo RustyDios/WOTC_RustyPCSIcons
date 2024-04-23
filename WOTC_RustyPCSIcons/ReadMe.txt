@@ -1,4 +1,4 @@
-﻿You created an XCOM 2 Mod Project!
+﻿Rusty created another XCOM 2 Mod Project!
 
 I made this ages ago, its been part of my local setup
 was finally convinced to share it due to the inclusion of LWotC PCS'
