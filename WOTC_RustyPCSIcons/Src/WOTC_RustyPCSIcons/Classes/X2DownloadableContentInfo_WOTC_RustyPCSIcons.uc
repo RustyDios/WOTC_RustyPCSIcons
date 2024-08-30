@@ -2,7 +2,7 @@
 //  FILE:   XComDownloadableContentInfo_WOTC_RustyPCSIcons.uc                                    
 //  
 //	File created by RustyDios	15/09/19	12:20	
-//	LAST UPDATED				17/04/24	20:00
+//	LAST UPDATED				30/08/24	14:00
 //
 //	Adds an event listener to fix PCS Icons for custom PCS'
 //		Current Fixes for	BIO Division 2.0	Bio PCS: Damage Control
@@ -13,6 +13,13 @@
 //*******************************************************************************************
 
 class X2DownloadableContentInfo_WOTC_RustyPCSIcons extends X2DownloadableContentInfo config (RustyPCSIcons);
+
+struct ColouredPCSIconOverride
+{
+	var name PCSName;
+	var string IconPath;
+	var string InvImagePath;
+};
 
 static event OnLoadedSavedGame(){}
 

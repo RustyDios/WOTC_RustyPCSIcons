@@ -2,11 +2,11 @@
 //  FILE:   X2EventListener_PCSIcons_Fix                                 
 //  
 //	File created by RustyDios	15/09/19	12:20	
-//	LAST UPDATED				19/02/23	16:15
+//	LAST UPDATED				30/08/24	14:00
 //
 //	Adds an event listener to fix PCS Icons for custom PCS'
 //		Current Fixes for	All PCS Icons	LW PCS'		ABBA
-//							BIO Div2.0		HIVE		MOCX	
+//							BIO Div2.0		HIVE		MOCX	SCP/MTF	
 //
 //	Coded with help from Iridar and the XCOM Modders Discord
 //
@@ -14,12 +14,13 @@
 
 class X2EventListener_PCSIcons_Fix extends X2EventListener config (RustyPCSIcons);
 
-struct ColouredPCSIconOverride
-{
-	var name PCSName;
-	var string IconPath;
-	var string InvImagePath;
-};
+//in x2dlc file, compile order issues
+//struct ColouredPCSIconOverride
+//{
+//	var name PCSName;
+//	var string IconPath;
+//	var string InvImagePath;
+//};
 
 var config bool bEnableLogging, bEnableUnknownIcon;
 var config array<ColouredPCSIconOverride> ColouredPCSIconOverrides;
