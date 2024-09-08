@@ -77,13 +77,8 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 
 	Tuple = XComLWTuple(EventData);
 	
-	if (Tuple == none)
-	{
-		//EARLY BAILOUT SOMETHING WENT VERY WRONG
-		`LOG("NO TUPLE DATA. ABORTED", default.bEnableLogging, 'Rusty_ColouredPCS');
-		return ELR_NoInterrupt;
-
-	}
+	//EARLY BAILOUT SOMETHING WENT VERY WRONG
+	if (Tuple == none) { `LOG("NO TUPLE DATA. ABORTED", default.bEnableLogging, 'Rusty_ColouredPCS'); return ELR_NoInterrupt; }
 
 	//GRAB THE PCS ITEM
 	ItemState = XComGameState_Item(Tuple.Data[0].o);
@@ -152,7 +147,7 @@ static function EventListenerReturn FixPCSIcons(Object EventData, Object EventSo
 
 	} //end itemstate !=none
 
-	//return with no adjustments
+	//return with no adjustments, use whatever basegame figured out for the icon ...
 	return ELR_NoInterrupt;
 }
 
